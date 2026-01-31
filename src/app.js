@@ -22,7 +22,14 @@ app.get("/api-docs/swagger.json", (req, res) => {
 app.use(
   "/api-docs",
   swaggerUi.serve,
-  swaggerUi.setup(swaggerSpec, swaggerOptions)
+  swaggerUi.setup(swaggerSpec, {
+    persistAuthorization: true,
+    customCss: `
+      .swagger-ui {
+        filter: drop-shadow(0 0 0.5rem rgba(0, 0, 0, 0.1));
+      }
+    `,
+  })
 );
 
 // Redirect /docs to /api-docs for convenience
