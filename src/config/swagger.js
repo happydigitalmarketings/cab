@@ -1,9 +1,14 @@
 import swaggerJsdoc from "swagger-jsdoc";
 import path from "path";
 import { fileURLToPath } from "url";
+import { globSync } from "glob";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Get all route files
+const routesDir = path.join(__dirname, "../routes");
+const routeFiles = globSync(path.join(routesDir, "*.js"));
 
 const options = {
   definition: {
@@ -38,7 +43,7 @@ const options = {
       },
     ],
   },
-  apis: [path.join(__dirname, "../routes/*.js")],
+  apis: routeFiles.length > 0 ? routeFiles : [path.join(__dirname, "../routes/*.js")],
 };
 
 export const swaggerSpec = swaggerJsdoc(options);
