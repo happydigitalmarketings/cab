@@ -5,7 +5,7 @@ import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";
 import driverRoutes from "./routes/driver.routes.js";
 import tripRoutes from "./routes/trip.routes.js";
-import { swaggerUi, swaggerSpec } from "./config/swagger.js";
+import { swaggerSpec, swaggerHtml } from "./config/swagger.js";
 
 const app = express();
 
@@ -13,28 +13,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Swagger - Proper Vercel setup
+// Swagger - CDN-based UI (Vercel compatible)
 app.get("/api-docs/swagger.json", (req, res) => {
   res.setHeader("Content-Type", "application/json");
   res.send(swaggerSpec);
 });
 
-app.use(
-  "/api-docs",
-  swaggerUi.serve,
-  swaggerUi.setup(swaggerSpec, {
-    swaggerOptions: {
-      url: "/api-docs/swagger.json",
-      persistAuthorization: true,
-      displayOperationId: false,
-    },
-    customCss: `
-      .swagger-ui {
-        filter: drop-shadow(0 0 0.5rem rgba(0, 0, 0, 0.1));
-      }
-    `,
-  })
-);
+app.get("/api-docs", (req, res) => {
+  res.setHeader("Content-Type", "text/html");
+  res.send(swaggerHtml);
+});
 
 // Redirect /docs to /api-docs for convenience
 app.get("/docs", (req, res) => {
