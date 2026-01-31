@@ -31,3 +31,4 @@ authMiddleware   🔐
 roleMiddleware   🔐
    ↓
 createTrip controller
+
