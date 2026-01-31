@@ -46,9 +46,15 @@ const router = express.Router();
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - pickup
+ *               - drop
  *             properties:
  *               pickup:
  *                 type: object
+ *                 required:
+ *                   - lat
+ *                   - lng
  *                 properties:
  *                   lat:
  *                     type: number
@@ -56,13 +62,19 @@ const router = express.Router();
  *                     type: number
  *               drop:
  *                 type: object
+ *                 required:
+ *                   - lat
+ *                   - lng
  *                 properties:
  *                   lat:
  *                     type: number
  *                   lng:
+ *                     type: number
  *     responses:
  *       200:
  *         description: Trip created successfully
+ *       401:
+ *         description: Unauthorized
  */
 router.post("/create", authMiddleware, createTrip);
 
@@ -88,6 +100,22 @@ router.get("/my-active", authMiddleware, getMyActiveTrip);
  *     tags: [Trip]
  *     security:
  *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - tripId
+ *             properties:
+ *               tripId:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Trip accepted successfully
+ *       401:
+ *         description: Unauthorized
  */
 router.post("/accept", authMiddleware, acceptTrip);
 
@@ -99,6 +127,22 @@ router.post("/accept", authMiddleware, acceptTrip);
  *     tags: [Trip]
  *     security:
  *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - tripId
+ *             properties:
+ *               tripId:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Trip started successfully
+ *       401:
+ *         description: Unauthorized
  */
 router.post("/start", authMiddleware, startTrip);
 
@@ -110,6 +154,22 @@ router.post("/start", authMiddleware, startTrip);
  *     tags: [Trip]
  *     security:
  *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - tripId
+ *             properties:
+ *               tripId:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Trip ended successfully
+ *       401:
+ *         description: Unauthorized
  */
 router.post("/end", authMiddleware, endTrip);
 
