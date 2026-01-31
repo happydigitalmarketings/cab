@@ -13,11 +13,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Swagger - Proper Vercel setup with separate JSON endpoint
+//Swagger - Proper Vercel setup with separate JSON endpoint
 app.get("/api-docs/swagger.json", (req, res) => {
   res.setHeader("Content-Type", "application/json");
   res.send(swaggerSpec);
 });
+
+
+if (process.env.NODE_ENV !== "production") {
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+}
 
 app.use(
   "/api-docs",
