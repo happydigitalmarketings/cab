@@ -1,11 +1,11 @@
 import express from "express";
 import cors from "cors";
 
-// Routes (we will add later)
- import authRoutes from "./routes/auth.routes.js";
- import driverRoutes from "./routes/driver.routes.js";
+// Routes
+import authRoutes from "./routes/auth.routes.js";
+import driverRoutes from "./routes/driver.routes.js";
 import tripRoutes from "./routes/trip.routes.js";
-import { swaggerUi, swaggerSpec, swaggerOptions } from "./config/swagger.js";
+import { swaggerUi, swaggerSpec } from "./config/swagger.js";
 
 const app = express();
 
@@ -13,22 +13,21 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-//Swagger - Proper Vercel setup with separate JSON endpoint
+// Swagger - Proper Vercel setup
 app.get("/api-docs/swagger.json", (req, res) => {
   res.setHeader("Content-Type", "application/json");
   res.send(swaggerSpec);
 });
 
-
-if (process.env.NODE_ENV !== "production") {
-  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-}
-
 app.use(
   "/api-docs",
   swaggerUi.serve,
   swaggerUi.setup(swaggerSpec, {
-    persistAuthorization: true,
+    swaggerOptions: {
+      url: "/api-docs/swagger.json",
+      persistAuthorization: true,
+      displayOperationId: false,
+    },
     customCss: `
       .swagger-ui {
         filter: drop-shadow(0 0 0.5rem rgba(0, 0, 0, 0.1));
@@ -48,13 +47,12 @@ app.get("/", (req, res) => {
 });
 
 // API routes
- app.use("/api/auth", authRoutes);
-// app.use("/api/trip", tripRoutes);
-
+app.use("/api/auth", authRoutes);
 app.use("/api/driver", driverRoutes);
-
 app.use("/api/trip", tripRoutes);
 
-
-
 export default app;
+
+
+
+

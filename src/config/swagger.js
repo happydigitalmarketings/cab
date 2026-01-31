@@ -39,22 +39,8 @@ const options = {
       },
     ],
   },
-  apis: [path.join(__dirname, "../routes/*.js")], // Absolute path for serverless
+  apis: [path.join(__dirname, "../routes/*.js")],
 };
 
 export const swaggerSpec = swaggerJsdoc(options);
-
-export const swaggerOptions = {
-  swaggerOptions: {
-    url: "/api-docs/swagger.json",
-    persistAuthorization: true,
-    displayOperationId: false,
-  },
-  customCss: `
-    .swagger-ui {
-      filter: drop-shadow(0 0 0.5rem rgba(0, 0, 0, 0.1));
-    }
-  `,
-};
-
 export { swaggerUi };
